@@ -8,23 +8,27 @@ import java.util.Map;
 
 public class DatabaseConnector {
 
-    private static final String username = ConfigurationReader.getProperty("userName");
-    private static final String password = ConfigurationReader.getProperty("password");
-    private static final String url      = ConfigurationReader.getProperty("url");
+    private static final String username = ConfigurationReader.getProperty("oracle_username");
+    private static final String password = ConfigurationReader.getProperty("oracle_password");
+    private static final String url      = ConfigurationReader.getProperty("oracle_url");
 
-    private static Connection connection;
-    private static Statement statement;
-    private static ResultSet resultSet;
-    private static ResultSetMetaData rsmd;
+    private static Connection connection;   //baglanti
+    private static Statement statement;  //sorgu
+    private static ResultSet resultSet;  //cevap
 
-    public static ResultSet getResultSet(String query){
+
+    public static ResultSet getResultSet(String query) {
+
+        //  Connection connection1 = DriverManager.getConnection(connectionUrl,dbusername,dbpassword);
 
         try {
-            connection = DriverManager.getConnection(url,username,password);
-            if (connection != null){
+            connection = DriverManager.getConnection(url, username, password);
+            if (connection != null) {
                 System.out.println("EN: Connected to the database...");
+                System.out.println("TR: Database e baglanildi...");
             } else {
                 System.out.println("EN: Database connection failed");
+                System.out.println("TR: Database baglantisi kurulamadi.");
             }
 
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -39,11 +43,12 @@ public class DatabaseConnector {
     //query sonucunu list map seklinde almak icin bu method kullanilabilir
     public static List<Map<String,String>> getQueryAsAListOfMaps(String query) throws SQLException {
         resultSet=getResultSet(query);
-        rsmd = resultSet.getMetaData();
-        int sizeOfColumns=rsmd.getColumnCount();
+        ResultSetMetaData rsdm=resultSet.getMetaData();
+        int sizeOfColumns=rsdm.getColumnCount();
+
         List<String> nameOfColumnsList=new ArrayList<>();
-        for (int i=1;i<=rsmd.getColumnCount();i++){
-            nameOfColumnsList.add(rsmd.getColumnName(i));
+        for (int i=1;i<=rsdm.getColumnCount();i++){
+            nameOfColumnsList.add(rsdm.getColumnName(i));
         }
         resultSet.beforeFirst();
 
@@ -74,5 +79,6 @@ public class DatabaseConnector {
         }catch (SQLException ex){
             ex.printStackTrace();
         }
+
     }
 }

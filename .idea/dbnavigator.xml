@@ -17,7 +17,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="windows-1254" />
+      <charset value="windows-1252" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -25,8 +25,10 @@
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes>
-      <connection connection-id="7a579112-7d49-4a33-af73-db60e17e6334">
-        <schema name="db_jdbc" object-types="table, view, function, column" />
+      <connection connection-id="b282e947-cf66-45a4-a671-3031114c58b9">
+        <schema name="APEX_040000" object-types="synonym, procedure, function" />
+        <schema name="HR" object-types="table, view, materialized view, synonym, sequence, procedure, function, package, type, column, package function, package procedure, package type, type function, type procedure" />
+        <schema name="PUBLIC" object-types="table, view, materialized view, synonym, sequence, procedure, function, package, type" />
       </connection>
     </loaded-nodes>
   </component>
@@ -54,12 +56,81 @@ where merkez_ulke = 'germany';
 			
 --en cok abonesi olan 2. sirket hangisi]]></console>
     </connection>
+    <connection id="b282e947-cf66-45a4-a671-3031114c58b9">
+      <console name="Sqldeveloper" type="STANDARD" schema="HR" session="Main"><![CDATA[select *
+from HR.SIRKETLER
+where MERKEZ_ULKE='Germany'
+--merkez ulkesi Turkey ve Usa olan ulkelerin 2000 yilindan sonra kurulanlarin sayisini bulunuz			
+		
+--sirket isminde a harfi bulunmayanlarin sayisini bulunuz	
+select *
+from SIRKETLER
+where SIRKET_ADI not like 'a%a'			
+--kurulus yili  cift sayi olanlarin sayisini bulunuz	
+select *
+from SIRKETLER
+				
+--abone sayisi  5 haneli olan ulkerin isimlerini ve abone sayisini bulunuz	
+select *
+from SIRKETLER
+where ODEME_TURU = 'nakit'
+				
+--odeme turu nakit olanlarin en fazla ve en az abone sayisini bulunuz					
+--her bir odeme turunden kac tane oldugunu bulunuz--odeme turu en fazla olan turun 'hepsi' oldugunu dogrulayiniz
+
+
+
+
+--============= US03 =============
+--TC0301 Merkez ulke adina gore abone sayilarinin toplamini gruplandiriniz. Abone sayisi en fazla olan ulkeyi bulunuz
+select merkez_ulke, sum(abone_sayisi) as toplam_abone_sayisi
+from SIRKETLER
+where ABONE_SAYISI>0
+group by MERKEZ_ULKE
+order by toplam_abone_sayisi desc;
+
+select *
+from (
+select merkez_ulke, sum(abone_sayisi) as toplam_abone_sayisi
+from SIRKETLER
+where ABONE_SAYISI>0
+group by MERKEZ_ULKE
+order by toplam_abone_sayisi desc
+)
+where rownum <4;
+	
+
+--TC0302 Sirket id'si 1210 olan sirketin ismini "Trendyol' olarak guncelleyiniz		
+update SIRKETLER
+set SIRKET_ADI = 'Trendyol'
+where SIRKET_ID = 1210
+
+
+--TC0303 Gunumuze en yakin tarihte kurulan sirketin merkez ulkesini bulunuz			
+select *
+from (
+select merkez_ulke, kurulus_tarihi
+from SIRKETLER
+where KURULUS_TARIHI< '29.Jun.2021'
+order by KURULUS_TARIHI desc 
+)
+where rownum <2;]]></console>
+    </connection>
+    <connection id="34356710-a84c-49d6-9e26-81c2e3832c8d">
+      <console name="OracleSqldeveloper" type="STANDARD" schema="HR" session="Main" />
+    </connection>
+    <connection id="2573920a-8634-4644-926d-53f783d16d02">
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
+    </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="7a579112-7d49-4a33-af73-db60e17e6334" />
+    <connection id="b282e947-cf66-45a4-a671-3031114c58b9" />
+    <connection id="34356710-a84c-49d6-9e26-81c2e3832c8d" />
+    <connection id="2573920a-8634-4644-926d-53f783d16d02" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="7a579112-7d49-4a33-af73-db60e17e6334" dataset="db_jdbc.sirketler" active-filter-id="" />
@@ -107,6 +178,258 @@ where merkez_ulke = 'germany';
           <type value="USER_PASSWORD" />
           <user value="root" />
           <deprecated-pwd value="TXlzcWwuMDAyNQ==" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <deprecated-proxy-pwd value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="false" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="true" />
+          <environment-type value="default" />
+          <connectivity-timeout value="5" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
+      <connection id="b282e947-cf66-45a4-a671-3031114c58b9" active="true">
+        <database>
+          <name value="Sqldeveloper" />
+          <description value="" />
+          <database-type value="ORACLE" />
+          <config-type value="BASIC" />
+          <database-version value="11.2" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="SID" />
+          <host value="localhost" />
+          <port value="1521" />
+          <database value="XE" />
+          <type value="USER_PASSWORD" />
+          <user value="hr" />
+          <deprecated-pwd value="aHI=" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <deprecated-proxy-pwd value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="false" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="true" />
+          <environment-type value="default" />
+          <connectivity-timeout value="5" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
+      <connection id="34356710-a84c-49d6-9e26-81c2e3832c8d" active="true">
+        <database>
+          <name value="OracleSqldeveloper" />
+          <description value="" />
+          <database-type value="ORACLE" />
+          <config-type value="BASIC" />
+          <database-version value="11.2" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="SID" />
+          <host value="localhost" />
+          <port value="1521" />
+          <database value="XE" />
+          <type value="USER_PASSWORD" />
+          <user value="hr" />
+          <deprecated-pwd value="aHI=" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <deprecated-proxy-pwd value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="false" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="true" />
+          <environment-type value="default" />
+          <connectivity-timeout value="5" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
+      <connection id="2573920a-8634-4644-926d-53f783d16d02" active="true">
+        <database>
+          <name value="Connection" />
+          <description value="" />
+          <database-type value="ORACLE" />
+          <config-type value="BASIC" />
+          <database-version value="9999.0" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="SID" />
+          <host value="localhost" />
+          <port value="1521" />
+          <database value="XE" />
+          <type value="USER_PASSWORD" />
+          <user value="" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />

@@ -1,20 +1,22 @@
 package jdbc.tests;
 
 import jdbc.utilities.DatabaseConnector;
+import jdbc.utilities.DatabaseConnector2;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class US01_sirketler {
-    List<Map<String, String>> list;
+    List<Map<String, String>> list = new ArrayList<>();
 
     @Test
     public void TC0101() throws SQLException {
         // sirketler tablosunda toplam kac sirket ismi var
-        String query = "SELECT count(sirket_adi)\n" +
-                        "FROM sirketler";
+        String query = "select *\n" +
+                "from HR.SIRKETLER";
         list = DatabaseConnector.getQueryAsAListOfMaps(query);
         System.out.println("list = " + list.size());
 
