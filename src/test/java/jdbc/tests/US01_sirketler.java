@@ -16,8 +16,9 @@ public class US01_sirketler {
     public void TC0101() throws SQLException {
         // sirketler tablosunda toplam kac sirket ismi var
         String query = "select *\n" +
-                "from HR.SIRKETLER";
-        list = DatabaseConnector.getQueryAsAListOfMaps(query);
+                "from orders\n" +
+                "where order_id = 10250";
+        list = DatabaseConnector2.getQueryResultWithAListMap(query);
         System.out.println("list = " + list.size());
 
     }
@@ -25,9 +26,8 @@ public class US01_sirketler {
     @Test
     public void TC0102() throws SQLException {
         // almaya merkezi sirketlerin sayisi kac
-        String query = "select count(merkez_ulke)\n" +
-                "from sirketler\n" +
-                "where merkez_ulke = 'germany';";
+        String query = "select *\n" +
+                "from SIRKETLER";
         list = DatabaseConnector.getQueryAsAListOfMaps(query);
         System.out.println("list = " + list.size());
 

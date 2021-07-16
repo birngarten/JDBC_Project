@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class DatabaseConnector2 {
 
-    private static final String dbusername = ConfigurationReader.getProperty("oracle_username");
-    private static final String dbpassword = ConfigurationReader.getProperty("oracle_password");
-    private static final String connectionUrl = ConfigurationReader.getProperty("oracle_url");
+    private static final String dbusername = ConfigurationReader.getProperty("mySql_url");
+    private static final String dbpassword = ConfigurationReader.getProperty("mySql_userName");
+    private static final String connectionUrl = ConfigurationReader.getProperty("mySql_password");
 
     private static Connection connection;
     private static Statement statement;
